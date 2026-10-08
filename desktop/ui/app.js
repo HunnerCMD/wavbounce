@@ -50,6 +50,7 @@ function showSaved(){$('saved').hidden=!saved;if(saved)$('savedConnect').textCon
 function showLicense(state){
   license=state;$('proBadge').textContent=license.pro?'PRO':'FREE';$('proBadge').dataset.pro=String(license.pro);
   $('proStatus').textContent=license.pro?'Up to four listeners, four mixed sources and saved listener groups are unlocked.':'One listener and one mixed source at a time. WavBounce Pro adds up to four of each, plus saved listener groups.';
+  $('nearbyHint').textContent=license.pro?'Add up to four sources to your mix.':'Add a source to your mix. WavBounce Pro mixes up to four.';
   $('proActivate').hidden=license.pro;$('proActive').hidden=!license.pro;
   if(license.pro)$('proDetail').textContent=license.name?`Licensed to ${license.name}.`:'Licensed.';
 }
