@@ -2,7 +2,7 @@
 
 Private audio between your Mac and Windows computers, over your own network. Share one computer's system audio (or a microphone) with another computer, or mix several computers into one output. There's no cloud account, no server and no recording. Audio goes directly between your devices over pinned TLS and WebRTC/Opus.
 
-> **Status: development preview (0.5.0).** It works day to day on Mac and Windows, but builds are not notarized or code-signed by a publisher yet. A native iPad/iPhone receiver is in development and can't send audio yet.
+> **Status: development preview (0.5.1).** It works day to day on Mac and Windows, but builds are not notarized or code-signed by a publisher yet. A native iPad/iPhone receiver is in development and can't send audio yet.
 
 ## Download
 

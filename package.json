@@ -1,6 +1,6 @@
 {
   "name": "wavbounce",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": true,
   "description": "Private audio between your computers and iPad",
   "author": "Hunter Candari",
@@ -47,7 +47,7 @@
     "appId": "com.huntercreative.wavbounce",
     "productName": "WavBounce",
     "directories": {
-      "output": "release/0.5.0"
+      "output": "release/0.5.1"
     },
     "files": [
       "desktop/**/*",
