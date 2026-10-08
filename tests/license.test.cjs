@@ -14,6 +14,9 @@ const base=()=>({v:1,product:'pro',id:crypto.randomUUID(),issued:new Date().toIS
 const VALID=sign(base()),VALID_WITH_NAME=sign({...base(),name:'Test Buyer'}),WRONG_KEY=sign(base(),OTHER);
 const WRONG_PRODUCT=sign({...base(),product:'basic'}),WRONG_VERSION=sign({...base(),v:2});
 const verify=key=>License.verify(key,PUB);
+// Flip a character away from the end: a final base64url character can carry only padding bits,
+// so changing it may decode to identical bytes.
+const flipAt=(s,i)=>s.slice(0,i)+(s[i]==='A'?'B':'A')+s.slice(i+1);
 
 test('a genuine license key verifies and returns its payload',()=>{
   const result=verify(VALID);
@@ -23,13 +26,12 @@ test('a genuine license key verifies and returns its payload',()=>{
   const named=verify(VALID_WITH_NAME);assert.equal(named.valid,true);assert.equal(named.payload.name,'Test Buyer');
 });
 test('a tampered payload is rejected',()=>{
-  const [prefix,payload,rest]=[VALID.slice(0,4),VALID.slice(4,VALID.indexOf('.')),VALID.slice(VALID.indexOf('.'))];
-  const flipped=payload.slice(0,-1)+(payload.at(-1)==='A'?'B':'A');
-  const result=verify(prefix+flipped+rest);
+  const dot=VALID.indexOf('.'),i=4+Math.floor((dot-4)/2);
+  const result=verify(flipAt(VALID,i));
   assert.equal(result.valid,false);assert.match(result.reason,/altered|genuine/i);
 });
 test('a tampered signature is rejected',()=>{
-  const result=verify(VALID.slice(0,-1)+(VALID.at(-1)==='A'?'B':'A'));
+  const result=verify(flipAt(VALID,VALID.indexOf('.')+10));
   assert.equal(result.valid,false);assert.match(result.reason,/altered|genuine/i);
 });
 test('a key signed by the wrong private key is rejected',()=>{
