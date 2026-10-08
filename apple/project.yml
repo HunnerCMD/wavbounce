@@ -1,0 +1,52 @@
+name: RelayAudio
+options:
+  bundleIdPrefix: com.huntercreative
+  deploymentTarget:
+    iOS: "16.0"
+packages:
+  WebRTC:
+    url: https://github.com/stasel/WebRTC.git
+    exactVersion: 152.0.0
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.3.0"
+    CURRENT_PROJECT_VERSION: 3
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+targets:
+  RelayAudio:
+    type: application
+    platform: iOS
+    sources: [RelayAudio]
+    dependencies:
+      - package: WebRTC
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.huntercreative.wavbounce.ipad
+        PRODUCT_NAME: WavBounce
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTS_MACCATALYST: YES
+        "PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]": com.huntercreative.wavbounce.catalyst
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_STYLE: Automatic
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: WavBounce
+        UILaunchScreen: {}
+        UIBackgroundModes: [audio]
+        UIAppFonts: [ibm-plex-mono-400-latin.ttf, shippori-mincho-400-latin.ttf]
+        NSLocalNetworkUsageDescription: WavBounce plays audio from your paired computers on your private network.
+        NSBonjourServices: [_wavbounce._tcp]
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+        CFBundleURLTypes:
+          - CFBundleURLName: com.huntercreative.wavbounce.pair
+            CFBundleURLSchemes: [wavbounce]
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+schemes:
+  RelayAudio:
+    build:
+      targets:
+        RelayAudio: all

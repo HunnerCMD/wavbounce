@@ -1,0 +1,96 @@
+{
+  "name": "wavbounce",
+  "version": "0.5.0",
+  "private": true,
+  "description": "Private audio between your computers and iPad",
+  "author": "Hunter Candari",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HunnerCMD/wavbounce.git"
+  },
+  "homepage": "https://github.com/HunnerCMD/wavbounce",
+  "bugs": {
+    "url": "https://github.com/HunnerCMD/wavbounce/issues"
+  },
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test tests/*.test.cjs",
+    "test:audio": "node tests/audio-integration.cjs",
+    "pack:mac": "electron-builder --mac dir --arm64 && node tools/verify-mac-signature.cjs",
+    "pack:mac:intel": "electron-builder --mac dir --x64 && node tools/verify-mac-signature.cjs --arch x64",
+    "pack:mac:signed": "test -n \"$WAVBOUNCE_SIGN_IDENTITY\" && electron-builder --mac dir --arm64 \"-c.mac.identity=$WAVBOUNCE_SIGN_IDENTITY\" && node tools/verify-mac-signature.cjs --require-certificate",
+    "pack:mac:intel:signed": "test -n \"$WAVBOUNCE_SIGN_IDENTITY\" && electron-builder --mac dir --x64 \"-c.mac.identity=$WAVBOUNCE_SIGN_IDENTITY\" && node tools/verify-mac-signature.cjs --arch x64 --require-certificate",
+    "pack:windows": "electron-builder --win nsis zip --x64",
+    "test:apple": "node tests/native-audio-integration.cjs",
+    "test:discovery": "node tests/discovery-audio-integration.cjs",
+    "test:reconnect": "node tests/reconnect-audio-integration.cjs",
+    "test:lan": "node tests/discovery-audio-integration.cjs --lan",
+    "test:multi": "node tests/multi-audio-integration.cjs",
+    "source:export": "node tools/export-source.cjs",
+    "test:mixer": "node tests/headless-mixer.cjs",
+    "test:headless": "node tests/headless-multi.cjs"
+  },
+  "dependencies": {
+    "bonjour-service": "1.4.4",
+    "qrcode": "1.5.4",
+    "selfsigned": "5.5.0",
+    "ws": "8.21.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "electron": "44.2.0",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.huntercreative.wavbounce",
+    "productName": "WavBounce",
+    "directories": {
+      "output": "release/0.5.0"
+    },
+    "files": [
+      "desktop/**/*",
+      "shared/**/*",
+      "package.json",
+      "THIRD-PARTY.md",
+      "LICENSE"
+    ],
+    "mac": {
+      "category": "public.app-category.music",
+      "minimumSystemVersion": "14.2",
+      "identity": "-",
+      "hardenedRuntime": true,
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist",
+      "icon": "assets/Relay.icns",
+      "extendInfo": {
+        "NSAudioCaptureUsageDescription": "WavBounce sends your computer audio only when you turn on sharing.",
+        "NSScreenCaptureUsageDescription": "WavBounce uses the system share picker to access audio. Screen video is immediately discarded and is never sent or saved.",
+        "NSMicrophoneUsageDescription": "WavBounce uses your microphone only when you choose a Microphone source and start sharing.",
+        "NSLocalNetworkUsageDescription": "WavBounce connects directly to your paired computers and iPad on your network.",
+        "NSBonjourServices": [
+          "_wavbounce._tcp"
+        ]
+      }
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ],
+      "signExecutable": false,
+      "icon": "assets/icon.ico"
+    },
+    "artifactName": "WavBounce-${version}-${os}-${arch}.${ext}",
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "WavBounce",
+      "artifactName": "WavBounce-Setup-${version}-win-${arch}.${ext}"
+    }
+  }
+}

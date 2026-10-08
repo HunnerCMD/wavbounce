@@ -1,0 +1,14 @@
+node_modules/
+release/
+.build/
+.test-data*/
+apple/build/
+apple/RelayAudio.xcodeproj/
+apple/Package.resolved
+__pycache__/
+.DS_Store
+evidence/
+.env
+.env.*
+*.log
+*.pem
